@@ -1121,6 +1121,24 @@ public class Parser {
         return lhs;
     }
 
+    private JExpression shiftExpression() {
+        int line = scanner.token().line();
+        boolean more = true;
+        JExpression lhs = additiveExpression();
+        while (more) {
+            if (have(SHR)) {
+                lhs = new JShiftRightOp(line, lhs, additiveExpression());
+            } else if (have(SHL)) {
+                lhs = new JShiftLeftOp(line, lhs, additiveExpression());
+            } else if (have(SHRU)) {
+                lhs = new JShiftRightUnsignedOp(line, lhs, additiveExpression());
+            } else {
+                more = false;
+            }
+        }
+        return lhs;
+    }
+
     /**
      * Parse a multiplicative expression.
      * 
