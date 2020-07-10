@@ -83,6 +83,9 @@ relationalExpression ::= additiveExpression       // level 5
                            [(GT | LE) additiveExpression
                            | INSTANCEOF referenceType]
 
+shiftExpression ::= additiveExpression // level 4
+                         {(<< | >> | >>>) additiveExpression}
+
 additiveExpression ::= multiplicativeExpression // level 3
                          {(PLUS | MINUS) multiplicativeExpression}
 

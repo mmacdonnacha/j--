@@ -1108,6 +1108,12 @@ public class Parser {
                 lhs = new JSubtractOp(line, lhs, multiplicativeExpression());
             } else if (have(PLUS)) {
                 lhs = new JPlusOp(line, lhs, multiplicativeExpression());
+            } else if (have(SHR)) {
+                lhs = new JShiftRightOp(line, lhs, additiveExpression());
+            } else if (have(SHL)) {
+                lhs = new JShiftLeftOp(line, lhs, additiveExpression());
+            } else if (have(SHRU)) {
+                lhs = new JShiftRightUnsignedOp(line, lhs, additiveExpression());
             } else {
                 more = false;
             }

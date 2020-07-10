@@ -47,6 +47,9 @@ PLUS_ASSIGN ::= "+="
 STAR        ::= "*"
 DIV         ::= "/"
 REM         ::= "%"
+SHR         ::= ">>"
+SHL         ::= "<<"
+SHRU        ::= ">>>"
 
 // Separators
 COMMA       ::= ","
