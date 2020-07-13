@@ -1076,16 +1076,46 @@ public class Parser {
 
     private JExpression relationalExpression() {
         int line = scanner.token().line();
-        JExpression lhs = additiveExpression();
+        JExpression lhs = shiftExpression();
         if (have(GT)) {
-            return new JGreaterThanOp(line, lhs, additiveExpression());
+            return new JGreaterThanOp(line, lhs, shiftExpression());
         } else if (have(LE)) {
-            return new JLessEqualOp(line, lhs, additiveExpression());
+            return new JLessEqualOp(line, lhs, shiftExpression());
         } else if (have(INSTANCEOF)) {
             return new JInstanceOfOp(line, lhs, referenceType());
         } else {
             return lhs;
         }
+    }
+
+    /**
+     * Parse a shift expression.
+     * 
+     * <pre>
+     *   // level 3
+     *   shiftExpression ::= additiveExpression 
+     *                            {(<< | >> | >>>) additiveExpression}
+     * </pre>
+     * 
+     * @return an AST for a shiftExpression.
+     */
+
+    private JExpression shiftExpression() {
+        int line = scanner.token().line();
+        boolean more = true;
+        JExpression lhs = additiveExpression();
+        while (more) {
+            if (have(SHR)) {
+                lhs = new JShiftRightOp(line, lhs, additiveExpression());
+            } else if (have(SHL)) {
+                lhs = new JShiftLeftOp(line, lhs, additiveExpression());
+            } else if (have(SHRU)) {
+                lhs = new JShiftRightUnsignedOp(line, lhs, additiveExpression());
+            } else {
+                more = false;
+            }
+        }
+        return lhs;
     }
 
     /**
@@ -1108,12 +1138,6 @@ public class Parser {
                 lhs = new JSubtractOp(line, lhs, multiplicativeExpression());
             } else if (have(PLUS)) {
                 lhs = new JPlusOp(line, lhs, multiplicativeExpression());
-            } else if (have(SHR)) {
-                lhs = new JShiftRightOp(line, lhs, additiveExpression());
-            } else if (have(SHL)) {
-                lhs = new JShiftLeftOp(line, lhs, additiveExpression());
-            } else if (have(SHRU)) {
-                lhs = new JShiftRightUnsignedOp(line, lhs, additiveExpression());
             } else {
                 more = false;
             }
@@ -1121,23 +1145,7 @@ public class Parser {
         return lhs;
     }
 
-    private JExpression shiftExpression() {
-        int line = scanner.token().line();
-        boolean more = true;
-        JExpression lhs = additiveExpression();
-        while (more) {
-            if (have(SHR)) {
-                lhs = new JShiftRightOp(line, lhs, additiveExpression());
-            } else if (have(SHL)) {
-                lhs = new JShiftLeftOp(line, lhs, additiveExpression());
-            } else if (have(SHRU)) {
-                lhs = new JShiftRightUnsignedOp(line, lhs, additiveExpression());
-            } else {
-                more = false;
-            }
-        }
-        return lhs;
-    }
+    
 
     /**
      * Parse a multiplicative expression.

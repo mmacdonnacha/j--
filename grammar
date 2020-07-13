@@ -73,26 +73,33 @@ expression ::= assignmentExpression
 assignmentExpression ::= conditionalAndExpression  // must be a valid lhs
                            [(ASSIGN | PLUS_ASSIGN) assignmentExpression]
 
-conditionalAndExpression ::= equalityExpression // level 10
+// level 10
+conditionalAndExpression ::= equalityExpression 
                                {LAND equalityExpression}
 
-equalityExpression ::= relationalExpression  // level 6
+// level 6
+equalityExpression ::= relationalExpression  
                          {EQUAL relationalExpression}
 
-relationalExpression ::= additiveExpression       // level 5
-                           [(GT | LE) additiveExpression
+// level 5
+relationalExpression ::= shiftExpression       
+                           [(GT | LE) shiftExpression
                            | INSTANCEOF referenceType]
 
-shiftExpression ::= additiveExpression // level 4
+// level 4
+shiftExpression ::= additiveExpression 
                          {(<< | >> | >>>) additiveExpression}
 
-additiveExpression ::= multiplicativeExpression // level 3
+// level 3
+additiveExpression ::= multiplicativeExpression 
                          {(PLUS | MINUS) multiplicativeExpression}
 
-multiplicativeExpression ::= unaryExpression       // level 2
+// level 2
+multiplicativeExpression ::= unaryExpression       
                                {(STAR | DIV | REM) unaryExpression}
 
-unaryExpression ::= INC unaryExpression  // level 1
+// level 1
+unaryExpression ::= INC unaryExpression  
                   | MINUS unaryExpression
                   | simpleUnaryExpression
 
