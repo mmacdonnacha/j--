@@ -1038,12 +1038,12 @@ public class Parser {
     }
 
     /**
-     * Parse a bitise or expression.
+     * Parse a bitwise or expression.
      * 
      * <pre>
      *   //level 9
-     *   InclusiveOrExpression ::= equalityExpression 
-                               {OR equalityExpression}
+     *   InclusiveOrExpression ::= exclusiveOrExpression 
+                               {OR exclusiveOrExpression}
      * </pre>
      * 
      * @return an AST for a conditionalExpression.
@@ -1052,10 +1052,37 @@ public class Parser {
     private JExpression inclusiveOrExpression() {
         int line = scanner.token().line();
         boolean more = true;
-        JExpression lhs = equalityExpression();
+        JExpression lhs = exclusiveOrExpression();
         while (more) {
             if (have(OR)) {
-                lhs = new JBitwiseOrOp(line, lhs, equalityExpression());
+                lhs = new JBitwiseOrOp(line, lhs, exclusiveOrExpression());
+            } else {
+                more = false;
+            }
+        }
+        return lhs;
+    }
+
+
+    /**
+     * Parse a bitwise xor expression.
+     * 
+     * <pre>
+     *  // level 8
+     *  exclusiveOrExpression ::= equalityExpression 
+     *                         {OR equalityExpression}
+     * </pre>
+     * 
+     * @return an AST for a conditionalExpression.
+     */
+
+    private JExpression exclusiveOrExpression() {
+        int line = scanner.token().line();
+        boolean more = true;
+        JExpression lhs = equalityExpression();
+        while (more) {
+            if (have(XOR)) {
+                lhs = new JBitwiseXorOp(line, lhs, equalityExpression());
             } else {
                 more = false;
             }

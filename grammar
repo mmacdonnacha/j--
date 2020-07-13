@@ -78,8 +78,12 @@ conditionalAndExpression ::= inclusiveOrExpression
                                {LAND inclusiveOrExpression}
 
 // level 9
-inclusiveOrExpression ::= equalityExpression 
-                               {OR equalityExpression}
+inclusiveOrExpression ::= exclusiveExpression 
+                               {OR exclusiveExpression}
+
+// level 8
+exclusiveOrExpression ::= equalityExpression 
+                               {XOR equalityExpression}
 
 // level 6
 equalityExpression ::= relationalExpression  

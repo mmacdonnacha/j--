@@ -51,6 +51,7 @@ SHR         ::= ">>"
 SHL         ::= "<<"
 SHRU        ::= ">>>"
 OR          ::= "|"
+XOR         ::= "^"
 
 // Separators
 COMMA       ::= ","

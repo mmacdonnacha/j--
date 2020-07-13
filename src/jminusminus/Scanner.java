@@ -193,6 +193,9 @@ class Scanner {
                 reportScannerError("Operator & is not supported in j--.");
                 return getNextToken();
             }
+        case '^':
+            nextCh();
+            return new TokenInfo(XOR, line);
         case '>':
             nextCh();
             if (ch == '>') {
