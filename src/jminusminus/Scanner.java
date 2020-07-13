@@ -181,6 +181,9 @@ class Scanner {
             } else {
                 return new TokenInfo(MINUS, line);
             }
+        case '|':
+            nextCh();
+            return new TokenInfo(OR, line);
         case '&':
             nextCh();
             if (ch == '&') {

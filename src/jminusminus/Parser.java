@@ -1016,8 +1016,8 @@ public class Parser {
      * Parse a conditional-and expression.
      * 
      * <pre>
-     *   conditionalAndExpression ::= equalityExpression // level 10
-     *                                  {LAND equalityExpression}
+     *   conditionalAndExpression ::= inclusiveOrExpression // level 10
+     *                                  {LAND inclusiveOrExpression}
      * </pre>
      * 
      * @return an AST for a conditionalExpression.
@@ -1026,16 +1026,43 @@ public class Parser {
     private JExpression conditionalAndExpression() {
         int line = scanner.token().line();
         boolean more = true;
-        JExpression lhs = equalityExpression();
+        JExpression lhs = inclusiveOrExpression();
         while (more) {
             if (have(LAND)) {
-                lhs = new JLogicalAndOp(line, lhs, equalityExpression());
+                lhs = new JLogicalAndOp(line, lhs, inclusiveOrExpression());
             } else {
                 more = false;
             }
         }
         return lhs;
     }
+
+    /**
+     * Parse a bitise or expression.
+     * 
+     * <pre>
+     *   //level 9
+     *   InclusiveOrExpression ::= equalityExpression 
+                               {OR equalityExpression}
+     * </pre>
+     * 
+     * @return an AST for a conditionalExpression.
+     */
+
+    private JExpression inclusiveOrExpression() {
+        int line = scanner.token().line();
+        boolean more = true;
+        JExpression lhs = equalityExpression();
+        while (more) {
+            if (have(OR)) {
+                lhs = new JBitwiseOrOp(line, lhs, equalityExpression());
+            } else {
+                more = false;
+            }
+        }
+        return lhs;
+    }
+
 
     /**
      * Parse an equality expression.

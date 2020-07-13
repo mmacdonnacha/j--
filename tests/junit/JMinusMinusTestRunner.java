@@ -26,6 +26,7 @@ public class JMinusMinusTestRunner {
         suite.addTestSuite(ShiftRightTest.class);
         suite.addTestSuite(ShiftLeftTest.class);
         suite.addTestSuite(ShiftRightUnsignedTest.class);
+        suite.addTestSuite(BitwiseOrTest.class);
         return suite;
     }
 

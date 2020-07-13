@@ -50,6 +50,7 @@ REM         ::= "%"
 SHR         ::= ">>"
 SHL         ::= "<<"
 SHRU        ::= ">>>"
+OR          ::= "|"
 
 // Separators
 COMMA       ::= ","
