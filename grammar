@@ -82,8 +82,12 @@ inclusiveOrExpression ::= exclusiveExpression
                                {OR exclusiveExpression}
 
 // level 8
-exclusiveOrExpression ::= equalityExpression 
-                               {XOR equalityExpression}
+exclusiveOrExpression ::= andExpression 
+                               {XOR andExpression}
+
+// level 7
+andExpression ::= equalityExpression 
+                               {AND equalityExpression}
 
 // level 6
 equalityExpression ::= relationalExpression  

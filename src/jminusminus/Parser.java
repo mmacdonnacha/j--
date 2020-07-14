@@ -1063,7 +1063,6 @@ public class Parser {
         return lhs;
     }
 
-
     /**
      * Parse a bitwise xor expression.
      * 
@@ -1079,10 +1078,10 @@ public class Parser {
     private JExpression exclusiveOrExpression() {
         int line = scanner.token().line();
         boolean more = true;
-        JExpression lhs = equalityExpression();
+        JExpression lhs = andExpression();
         while (more) {
             if (have(XOR)) {
-                lhs = new JBitwiseXorOp(line, lhs, equalityExpression());
+                lhs = new JBitwiseXorOp(line, lhs, andExpression());
             } else {
                 more = false;
             }
@@ -1090,6 +1089,32 @@ public class Parser {
         return lhs;
     }
 
+
+    /**
+     * Parse a bitwise and expression.
+     * 
+     * <pre>
+     *  // level 7
+     *  andExpression ::= equalityExpression 
+     *                         {AND equalityExpression}
+     * </pre>
+     * 
+     * @return an AST for an andExpression.
+     */
+
+    private JExpression andExpression() {
+        int line = scanner.token().line();
+        boolean more = true;
+        JExpression lhs = equalityExpression();
+        while (more) {
+            if (have(AND)) {
+                lhs = new JBitwiseAndOp(line, lhs, equalityExpression());
+            } else {
+                more = false;
+            }
+        }
+        return lhs;
+    }
 
     /**
      * Parse an equality expression.
